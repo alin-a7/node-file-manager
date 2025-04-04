@@ -3,6 +3,7 @@ import process from "process";
 import {
   showFileContent,
   createFile,
+  createDirectory,
   copyFile,
   renameFile,
   moveFile,
@@ -54,24 +55,27 @@ export async function handleCommand(input, username, rl) {
     case "ls":
       await listFiles(currentDir);
       break;
-
+    // fs
     case "cat":
-      await showFileContent(args[0]);
+      await showFileContent(args[0], currentDir);
       break;
     case "add":
-      await createFile(args[0]);
+      await createFile(args[0], currentDir);
+      break;
+    case "mkdir":
+      await createDirectory(args[0], currentDir);
       break;
     case "rn":
-      await renameFile(args[0], args[1]);
+      await renameFile(args[0], args[1], currentDir);
       break;
     case "cp":
-      await copyFile(args[0], args[1]);
+      await copyFile(args[0], args[1], currentDir);
       break;
     case "mv":
-      await moveFile(args[0], args[1]);
+      await moveFile(args[0], args[1], currentDir);
       break;
     case "rm":
-      await deleteFile(args[0]);
+      await deleteFile(args[0], currentDir);
       break;
     // os
     case "os":

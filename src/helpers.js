@@ -9,7 +9,17 @@ export const getUsernameFromArgs = () => {
 export const tryOperation = async (operation) => {
   try {
     return await operation();
-  } catch (err) {
-    console.log(`Operation failed: ${err.message}`);
+  } catch (error) {
+    if (error.code === "EEXIST") {
+      console.log(`Operation failed: Directory/file already exists`);
+      return;
+    }
+
+    if (error.code === "ENOENT") {
+      console.log(`Operation failed: File not found`);
+      return;
+    }
+
+    console.log(`Operation failed: ${error.message}`);
   }
 };
