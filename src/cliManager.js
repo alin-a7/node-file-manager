@@ -12,6 +12,7 @@ import {
 import { listFiles, changeDirectory, goUp } from "./commands/nwd.js";
 import { handleOsCommand } from "./commands/os.js";
 import { calculateHash } from "./commands/hash.js";
+import { compressFile, decompressFile } from "./commands/zip.js";
 
 let currentDir = process.cwd();
 let isExiting = false;
@@ -84,6 +85,13 @@ export async function handleCommand(input, username, rl) {
     // hash
     case "hash":
       await calculateHash(args[0], currentDir);
+      break;
+    // zip
+    case "compress":
+      await compressFile(args[0], args[1], currentDir);
+      break;
+    case "decompress":
+      await decompressFile(args[0], args[1], currentDir);
       break;
 
     default:

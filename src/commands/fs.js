@@ -2,7 +2,12 @@ import fs from "fs";
 import path from "path";
 import { pipeline } from "stream/promises";
 
-import { tryOperation } from "../helpers.js";
+import {
+  tryOperation,
+  validateSourceFile,
+  validateTargetDirectory,
+  checkTargetFileExists,
+} from "../helpers.js";
 
 export async function showFileContent(filePath, currentDir) {
   if (!filePath) {
@@ -118,7 +123,7 @@ export async function moveFile(sourcePath, destination, currentDir) {
     await copyWithStreams(resolvedSource, finalTarget);
     await fs.promises.unlink(resolvedSource);
 
-    console.log(`File copied to: ${path.relative(currentDir, finalTarget)}`);
+    console.log(`File moved to: ${path.relative(currentDir, finalTarget)}`);
   });
 }
 
@@ -136,30 +141,6 @@ export async function deleteFile(filePath, currentDir) {
 }
 
 // utils
-
-async function validateSourceFile(resolvedPath) {
-  const stats = await fs.promises.stat(resolvedPath);
-  if (!stats.isFile()) {
-    throw new Error("Source is not a file");
-  }
-}
-
-async function validateTargetDirectory(resolvedPath) {
-  const stats = await fs.promises.stat(resolvedPath).catch(() => null);
-  if (!stats?.isDirectory()) {
-    throw new Error("Target directory doesn't exist");
-  }
-}
-
-async function checkTargetFileExists(resolvedPath) {
-  try {
-    await fs.promises.access(resolvedPath);
-    throw new Error("File already exists in target directory");
-  } catch (err) {
-    if (err.code !== "ENOENT") throw err;
-  }
-}
-
 async function copyWithStreams(source, target) {
   const readStream = fs.createReadStream(source);
   const writeStream = fs.createWriteStream(target);
