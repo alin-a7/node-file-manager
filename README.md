@@ -15,6 +15,8 @@ The file manager able to do the following:
 
 ```bash
 npm run start
+# or
+node src/index.js --username=your_username
 ```
 2. Use following commands
   - #### Navigation & working directory
