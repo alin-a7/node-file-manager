@@ -14,9 +14,7 @@ The file manager able to do the following:
 1. Run the development server:
 
 ```bash
-npm run start
-# or
-node src/index.js --username=your_username
+npm run start --username=your_username
 ```
 2. Use following commands
   - #### Navigation & working directory

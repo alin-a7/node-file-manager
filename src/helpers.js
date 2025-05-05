@@ -1,12 +1,14 @@
 import fs from "fs";
-import path from "path";
 
 export const getUsernameFromArgs = () => {
   const args = process.argv.slice(2);
   const usernameArg = args.find((arg) => arg.startsWith("--username="));
-  const username = usernameArg ? usernameArg.split("=")[1] : "Guest";
+  const usernameFromArgs = usernameArg ? usernameArg.split("=")[1] : "";
 
-  return username;
+  const usernameFromNpmConfig = process.env.npm_config_username;
+  const username = usernameFromArgs || usernameFromNpmConfig || "Guest";
+
+  return username[0].toUpperCase() + username.slice(1);
 };
 
 export const tryOperation = async (operation) => {
